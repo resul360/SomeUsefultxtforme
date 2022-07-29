@@ -1,0 +1,4 @@
+Security Model
+Confidentiality (Gizlilik)
+Integrity (Bütünlük)
+Availability (Erişebilirlik) Dos(Deny of service), DDos(Distributed Deny of service) 

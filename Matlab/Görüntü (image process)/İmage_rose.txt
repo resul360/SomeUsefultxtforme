@@ -1,0 +1,8 @@
+a=imread('rose.jpg');
+b=rgb2gray(a);
+b=im2double(b);
+c = [1,-1]'*[1,-1]*2;
+d=conv2(b,c,'full');
+e=filter2(b,c,'full');
+subplot(1,2,1),subimage(d);
+subplot(1,2,2),subimage(e);

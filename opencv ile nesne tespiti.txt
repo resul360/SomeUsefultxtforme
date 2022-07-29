@@ -1,0 +1,19 @@
+1. Ders 
+Kenar algılama;
+
+import cv2 # kütüphane çağırma
+import matplotib.pyplot as plt
+import numpy as np
+
+img=cv2.imread("london.jpg",0) % 280 x450, 0:gray scale 
+plt.figure(), plt.show(img, cmap="gray"),plt.axis("off")
+
+# kenar tespit edeim.
+edges=cv2.Canny(image=img, threshold1=0,threshold2=255)
+plt.figure(), plt.show(img, cmap="gray"),plt.axis("off")
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------

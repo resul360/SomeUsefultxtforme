@@ -1,0 +1,475 @@
+1. Ders 
+Resim içe aktarma;
+
+import cv2 # kütüphane çağırma
+img=cv2.imread('Dosya adı.uzantısı',0) % 280 x450, 0:gray scale 
+
+cv2.imshow("ilk resim", img)  
+
+k=cv2.waitKey(0) &0xFF
+
+if k==27:
+   cv2.destoryAllWindows()
+elif k==ord('s'): % s tuşu save
+  cv2.imwrite("image_gray.png", img)
+  cv2.destoryAllWindows()
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Ders
+Video içe aktarma;
+
+import cv2 # kütüphane çağırma
+import time
+
+video_name="Video ismi.uzantı"
+cap=cv2.VideoCapture(video_name)
+
+print("Genişlik",cap.get(3)) 1920
+print("Yükseklik",cap.get(4)) 1080
+
+if cap.isOpened()==False:
+    print("Hata")
+
+ret, frame=cap.read()
+
+while True:
+   if ret=True:
+
+    time.sleep(0.01) % eğer kullanmazsak çok hızlı akar.
+
+     cv2.imshow("Video",frame)
+
+    else: break
+    
+
+    if cv2.waitKey(1)&0XFF ==ord("q"):
+        break
+
+cap.realease() % stop capture
+cv2.destroyAllWindow()
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. Ders 
+Kamera açma ve Video kaydetme;
+
+import cv2 # kütüphane çağırma
+
+cap=cv2.VideoCapture(0)  % default kamera durumu 0 
+
+width=cv2.int(get(CAP_PROP_FRAME_WIDTH))
+heigth=cv2.int(get(CAP_PROP_FRAME_HEIGTH))
+
+print(width,heigth)
+
+#video kaydet
+
+video_rec=cv2.VideoWriter("video_kaydi.mp4",cv2.VideoWriter_fourcc(*"DIVX"),20,(width,heigth))
+ % 20 fps 
+
+while True:
+    
+  ret,frame=cap.get()
+  cv2.imshow("video",frame)
+
+  writer.write(frame)
+   
+   if cv2.waitKey(1)&0XFF ==ord("q"):
+        break
+
+cap.release()
+writer.release()
+cv2.destroyAllWindow()
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4. Ders 
+Boyutartırma ve kırpma işlemi
+
+import cv2 # kütüphane çağırma
+# rgb bir skalada
+
+img=cv2.imread('resim_adı.uzantısı',0) % 0 siyah beyaz
+print("Resim boyutu",img.shape)
+
+cv2.imshow("orjinal",img)
+
+#resize
+imgResized=cv2.resize(img,(800,800))
+print("reSized image",imgResized.shape)
+cv2.imshow("img Resized",imgResized)
+
+#cropped
+imgCropped=img[:200,0:300] #width heigth->> heigth width opencvde
+cv2.imshow("kirpilmiş resim",imgCropped)
+
+************************************************************************************************************
+
+5. Ders 
+Şekiller ve Metin ekleme
+
+
+import cv2 # kütüphane çağırma
+import numpy as np
+
+img=np.zeros((512,512,3), np.uint8) #siyah resim 
+print(img.shape)
+imshow("Siyah",img)
+
+#çizgi
+# resim, başlangıç, bitiş, renk, kalınlık
+#GBR (0,255,0)
+
+cv2.line(img,(0,0),(512,512),(0,255,0),3)
+cv2.imshow("cizgi",img)
+
+#Dikdörtgen
+# resim , başlangıç , bitiş, renk
+cv2.rectangle(img,(0,0),(512,512),(0,255,0),cv2.FILLED) # DOLDURULMUŞ
+cv2.imshow("dikdörtgen",img)
+
+#Dikdörtgen
+# resim , merkez , yarıçapı,  renk
+cv2.rectangle(img,(300,300),45,(255,255,0)) 
+cv2.imshow("cember",img)
+
+#metin
+# resim , başlangıç noktası , font, kalınlığı,  renk
+cv2.putText(img, "Resim",(300,300),cv2.FONT_HERSHEY_COMPLEX,1, (255,255,255))
+cv2.imshow("Metin",img)
+
+************************************************************************************************************
+
+6. Ders 
+Görüntülerin birleştirilmesi
+
+import cv2 # kütüphane çağırma
+import numpy as np
+
+img=cv2.imread('resim_adı.uzantısı')
+cv2.imshow("orijinal",img)
+
+# Yatay
+hor=np.hstack((img,img))
+cv2.imshow("Horizontal",hor)
+
+# Dikey
+ver=np.vstack((img,img))
+cv2.imshow("Vertical",ver)
+
+
+************************************************************************************************************
+
+7. Ders 
+Persperktif çarpıtma
+
+import cv2 # kütüphane çağırma
+import numpy as np
+
+img=cv2.imread('kart.png')
+cv2.imshow("orijinal",img)
+
+width=400
+heigth=500
+
+pts1=np.float32([[230,1],[1,472],[540,150],[338,617]])
+pts2=np.float([[0,0],[0,heigth],[width,0],[width,heigth]])
+
+matrix=cv2.getPerspectiveTransfrom(pts1,pts2)
+print(matrix)
+
+imgOutput=cv2.warpPerspective(img,matrix,(width,heigth))
+cv2.imshow("Nihai Resim",imgOutput)
+
+
+************************************************************************************************************
+8. Ders 
+Resim karıştırma
+
+import cv2 # kütüphane çağırma
+import matpoltlib.pyplot as plt
+
+img1=cv2.imread('img1.png')
+img1=cv2.cvtColor(img1,cv2.COLOR_BGR2RGB)
+
+img2=cv2.imread('img2.png')
+img2=cv2.cvtColor(img2,cv2.COLOR_BGR2RGB)
+
+
+plt.figure()
+cv2.imshow(img1)
+
+plt.figure()
+cv2.imshow(img2)
+
+print(img1.shape)
+print(img2.shape)
+^# toplamak için resim boyutları aynı olmalı
+img1=cv2.resize(img1,(600,600))
+print(img1.shape)
+
+img2=cv2.resize(img2,(600,600))
+print(img2.shape)
+
+plt.figure()
+cv2.imshow(img1)
+
+plt.figure()
+cv2.imshow(img2)
+
+# kartısılma =alpha*img1+beta*img2
+
+blended=cv2.addWeighted(src1=img1,alpha=1, src2=img2, beta=0.5, gamma=0)
+
+plt.figure()
+cv2.imshow(blended)
+
+
+************************************************************************************************************
+9. Ders 
+Resim eşikleme
+
+import cv2 # kütüphane çağırma
+import matpoltlib.pyplot as plt
+
+#resmi içe aktarma
+img=cv2.imread('img1.jpg')
+img=cv2.cvtColor(img,GBR2GRAY)
+
+plt.figure()
+plt.axis("off")
+plt.imshow(img,cmap="gray") #siyah beyaz colormap kullanılıyor.
+plt.show()
+
+
+#threshold
+_,thresh_img=cv2.threshold(img,, thresh=60, maxval=255, type=cv2.THRESH_BINARY)
+
+plt.figure()
+plt.imshow(thresh_img,cmap="gray") #siyah beyaz colormap kullanılıyor.
+plt.axis("off")
+plt.show()
+
+#threshold İNVERSE
+_,thresh_img=cv2.threshold(img,, thresh=60, maxval=255, type=cv2.THRESH_BINARY_INVERSE)
+
+plt.figure()
+plt.imshow(thresh_img,cmap="gray") #siyah beyaz colormap kullanılıyor.
+plt.axis("off")
+plt.show()
+
+#adaptive threshold
+
+thresh_img2=cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,8) # 11 komşu sayısı 
+plt.figure()
+plt.imshow(thresh_img2,cmap="gray") 
+plt.axis("off")
+plt.show()
+
+
+************************************************************************************************************
+9. Ders 
+Resim Bulanıklaştırma
+
+-Ortalama  Bulanıklaştırma
+-Gauss  Bulanıklaştırma
+-Medyan  Bulanıklaştırma
+
+
+-Ortalama  Bulanıklaştırma
+belirli sayıda pixelin ortalamsını alarak resim oluşturma
+
+-Gauss  Bulanıklaştırma
+gauss çekirdeğinebenzerterek
+
+-Medyan  Bulanıklaştırma(Tuzve biber siyah ve beyaz noktalar)
+çekidek alanındaki pixellerin medyanını alarak onları medyan değeri ile değiştirir.
+
+
+import cv2 # kütüphane çağırma
+import matpoltlib.pyplot as plt
+import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
+
+# blurring
+
+img=cv2.imread("NYC.jpg")
+img.cv2.cvtcolor(img,cv2.COLOR_GBR2RGB)
+
+plt.figure(), plt.imshow(img), plt.axis("off"), plt.title("orjinal"),plt.show()
+
+''''
+-Ortalama  Bulanıklaştırma
+belirli sayıda pixelin ortalamsını alarak resim oluşturma
+
+dst2=cv2.blur(img,ksize=(3,3))
+plt.figure(), plt.imshow(dst2), plt.axis("off"), plt.title("Ortalama  Bulanıklaştırma"),plt.show()
+
+
+''''
+'''
+-Gauss  Bulanıklaştırma
+gauss çekirdeğine benzerterek
+
+gb=cv2.GaussianBlur(img,ksize=(3,3),sigmaX=7) # sigmaY ototmatik olarak alıyor.
+plt.figure(), plt.imshow(gb), plt.axis("off"), plt.title("Gauss  Bulanıklaştırma"),plt.show()
+
+'''
+
+'''
+-Medyan  Bulanıklaştırma
+çekidek alanındaki pixellerin medyanını alarak onları medyan değeri ile değiştirir
+
+mb=cv2.medianBlur(img,ksize=3) 
+plt.figure(), plt.imshow(mb), plt.axis("off"), plt.title("Medyan  Bulanıklaştırma"),plt.show()
+
+'''
+
+!!! gaussinan noise eksik!!! 
+
+
+
+
+
+
+
+
+
+
+
+************************************************************************************************************
+
+10. Ders 
+Morfolojik operasyonlar
+
+# kütüphane çağırma
+import cv2 
+import matpoltlib.pyplot as plt
+import numpy as np
+
+
+#resmi içe aktarma
+img=cv2.imread("datai_team.jpg",0)
+plt.figure(), plt.imshow(img,cmap="gray"), plt.axis("off"), plt.title("orjinal img"),plt.show()
+
+
+#erozyon
+kernel=np.ones((5,5) , dtype=np.uint8)
+result=cv2.erode(img,kernel, iterations=1) #iterasyon erzyonunu şidddeti artırırsanız erozyon değeri artar.
+plt.figure(), plt.imshow(result,cmap="gray"), plt.axis("off"), plt.title("Erozyon"),plt.show()
+
+
+# genişletme dilation
+
+result2=cv2.dilate(img,kernel, iterations=1) #iterasyon genişleme şidddetir.
+plt.figure(), plt.imshow(result2,cmap="gray"), plt.axis("off"), plt.title("Genişleme"),plt.show()
+
+#white noise
+whiteNoise=np.random.randint(0,2, size=img.shape[:2]
+whiteNoise=whiteNoise*255
+plt.figure(), plt.imshow(whiteNoise,cmap="gray"), plt.axis("off"), plt.title("Beyaz gürültü"),plt.show()
+
+noise_img=whiteNoise+img
+plt.figure(), plt.imshow(noise_img,cmap="gray"), plt.axis("off"), plt.title("resim beyaz gürültülü"),plt.show()
+
+
+# açılma
+
+opening=cv2.morphologyEx(noise_img.astype(np.float32),cv2.MORPH_OPEN, kernel)
+plt.figure(), plt.imshow(opening,cmap="gray"), plt.axis("off"), plt.title("Açılma"),plt.show()
+
+
+#Black noise
+blackNoise=np.random.randint(0,2, size=img.shape[:2]
+blackNoise=whiteNoise*-255
+plt.figure(), plt.imshow(blackNoise,cmap="gray"), plt.axis("off"), plt.title("blackNoise"),plt.show()
+
+black_noise_img=blackNoise+img
+black_noise_img[black_noise_img<=-255]=0
+plt.figure(), plt.imshow(black_noise_img,cmap="gray"), plt.axis("off"), plt.title("black_noise_img"),plt.show()
+
+#kapatma
+
+closing=cv2.morphologyEx(black_noise_img.astype(np.float32),cv2.MORPH_CLOSE, kernel)
+plt.figure(), plt.imshow(closing,cmap="gray"), plt.axis("off"), plt.title("Kapatma"),plt.show()
+
+
+#gradient
+
+gradient=cv2.morphologyEx(img,cv2.MORPH_GRADIENT, kernel)
+plt.figure(), plt.imshow(gradient,cmap="gray"), plt.axis("off"), plt.title("Gradyan"),plt.show()
+
+
+************************************************************************************************************
+
+11. Ders 
+Görüntü gradyanları
+
+# kütüphane çağırma
+import cv2 
+import matpoltlib.pyplot as plt
+import numpy as np
+
+
+#resmi içe aktarma
+img=cv2.imread("sudoku.jpg",0)
+plt.figure(), plt.imshow(img,cmap="gray"), plt.axis("off"), plt.title("orjinal img"),plt.show()
+
+#X gradyan
+sobelx=cv2.Sobel(img,ddepth=cv2.CV_16S,dx=1,dy=0,ksize=5)  # 5x5 kutucukta
+plt.figure(), plt.imshow(sobelx,cmap="gray"), plt.axis("off"), plt.title("sobel X"),plt.show() 
+
+#Y gradyan
+sobely=cv2.Sobel(img,ddepth=cv2.CV_16S,dx=0,dy=1,ksize=5)  # 5x5 kutucukta
+plt.figure(), plt.imshow(sobely,cmap="gray"), plt.axis("off"), plt.title("sobel Y"),plt.show() 
+
+
+#laplacian gradient
+laplacian=cv2.Laplacian(img,ddepth=cv2.CV_16S)
+plt.figure(), plt.imshow(laplacian,cmap="gray"), plt.axis("off"), plt.title("laplacian gradient"),plt.show() 
+
+
+************************************************************************************************************
+
+12. Ders 
+Histogram 
+
+# kütüphane çağırma
+import cv2 
+import matpoltlib.pyplot as plt
+import numpy as np
+
+#resmi içe aktarma
+img=cv2.imread("red_blue.jpg")
+img_vis=cv2.cvtcolor(img,cv2.COLOR_BGR2RGB)
+plt.figure(), plt.imshow(img_vis)
+print(img.shape)
+
+img_hist=cv2.calcHist([img],channels=[0], mask=None, histSize=[256], ranges=[0,256])
+print(img_hist.shape)
+plt.figure(), plt.imshow(img_hist)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,186 @@
+Kablosuz Ağ Güvenliği
+
+2. Ders
+IEEE 802 standta göre çalışmaktadırlar.
+frekans aralığı artıkça erişim alanı azalmaktadır fakat veri aktarım hızı artmaktadır.
+
+Güncel 802.11b, g ve n kullanılmaktadır. 
+14 kanal da çalışmaktadır.
+Her kanal arasında 5 MHz fark vardır. Kanallar ülkelere göre değişmektedir. 
+
+3. Ders
+kablosuz ağ ile ilgili tanımlar;
+
+SSİD bir kablosuz ağın ismi
+AP access point erişim noktası
+STA-client istemci telefon pc gibi
+Channel: kanal
+
+Mode:       Master AP modudur.
+	Managed  istemci modudur.
+	Monitor   havadakiler dinleyen modtur.(Bağlantı sağlamaz)
+
+ifconfig kart adı down kartı devre dışı bırakır.(kart vardır ama gözükmez)
+ifconfig kart adı up kartı devreye alır.
+
+iwconfig wireless kartına yöneliktir.
+Modu değiştirme için kablosuz kartın devre dışı olması gerekir.
+iwconfig wlan0 mode monitor  ile calıştırılabiliriz.
+
+
+4. Ders
+Aircrack-ng suite anlatımı;
+
+öncelikle olarak ağımız monitor mod'ta olmalıdır.
+
+airmon-ng start wlan0
+
+iwlist wlan0mon channel (izleyebildiği kanalları gösteriyor ve şuanki mevcut kanalı görüyoruz.=
+
+
+5. Ders
+Aircrack-ng suite anlatımı (aireplay-ng);  
+
+aireplay-ng ile;  kısaca trafik oluşturmak için kullanılmaktadır.
+
+deauth
+fakeauth
+vb..
+
+6. Ders
+Aircrack-ng suite anlatımı (airmon-ng);  
+
+network kartımızı monitor moda almak için kullanıyoruz.
+
+airmon-ng start wlan0(interface adı)
+
+7. Ders
+Aircrack-ng suite anlatımı (airbase-ng);  
+
+sahte kablosuz ağı oluşturuyoruz.
+
+airbase-ng -e "KablosuzAgYayını" -w "1234567890" -c 8 wlan0
+-c channel numarası
+-e ağın adı
+-w şifreleme türü
+
+8. Ders
+Aircrack-ng suite anlatımı (airodump-ng);  
+
+havadaki paketleri toplamak için kullanılan bir pakettir.
+
+- airmon-ng wlan0	               ile ağ kartını monitor moda alıyoruz.
+- airodump-ng wlan0mon     	 ağ ile ilgili paket bilgileri topluyoruz.
+gelen bilgiler; 
+BSSID 		PWR	 Beacons  #Data	#/s 	CH 	MB	ENC 	CIPHER	AUTH 	ESSID
+
+BSSID:AP(access point) mac adresi
+PWR:ağ kartına uzaklığı (ne kadar küçükse o kadar yakın demektir.)
+Beacons: ağ kartının yaptığı yayın
+
+CH: Kanal numarası
+MB: Bağlantı hızı
+ENC: Şifreleme türü
+
+AUTH:yetkinlendirme türü
+ESSID: Ağın adı
+
+Alt taraf istemci ile alakalı
+
+BSSID 		STATION		 PWR	RATE	LOST	 FRAMES		 PROBE
+BSSID:AP(access point) mac adresi
+STATION: İstemcinin mac adresi
+PWR:ağ kartına uzaklığı (ne kadar küçükse o kadar yakın demektir.)
+PROBE:etrafta probe yayını yapan varmı diye kontrol ediyor.
+
+airodump-ng wlan0mon -w test  paketleri bir yere yazıyoruz.
+
+airodump-ng wlan0mon -c 8 sadece belirli kanalı dinleme
+
+airodump-ng wlan0mon --wps wps açık olup olmadığı görmek için
+
+9. Ders
+Aircrack-ng suite anlatımı;  
+
+aircrack-ng 5457-01.cap (dosya adı.cap)
+
+aircrack-ng -w password 5457-01.cap (wordlist ile )
+
+10. Ders
+Aircrack-ng suite anlatımı(airmon-ng); 
+
+airmon-ng --help ile neler olduğunu inceleyelim.(kullanımı görelim.)
+airmon-ng <start|stop|check> <interface> [Channel or frequency)
+
+airmon-ng start wlan0  monitor mod olarak çalıştırma
+
+airmon-ng stop wlan0mon ile ağı durdurma (wlan0mon monitor modtaki adı yazılmalı)
+
+airmon-ng check  arkada çalışan işlemleri gösterir.
+
+iwlist wlan0mon channel     ile monitor modunda dinlenebilecek kanalları gösterir.
+
+kanalı değiştirmek için ağ kartını durdurmak lazım ve başlatırken ilgili kanal numarası verilir.
+
+airmon-ng start wlan0 9    kanal numarası direk verilir.
+
+
+11. Ders
+Aircrack-ng suite anlatımı(airmon-ng ve airodump ile havadaki paketleri yakalama); 
+
+airmon-ng start wlan0 ağ kartını monitor moda alalım.
+
+airodump-ng wlan0mon
+
+
+12. Ders
+Aircrack-ng suite anlatımı(airodump, wifite, fern ); 
+
+airodump-ng wlan0mon  bilgi toplama aşaması
+
+wifite ile monitor nodta olan ağ kartında bilgi toplama yapılıyor.
+
+Fern API arayuzunde ağ kartını seçerek işlem yapabiliriz.(ağları bulup bunlara attack yapılabilir.)
+
+win tabanlı :
+Cain & Abel
+CommView for Wifi
+Network Stumbler
+
+
+13. Ders
+Wep cracking;
+
+client				Access point
+
+1 	   bağlantı isteği-------->
+2  	<--------rastgele seçilen metni gönderir
+3 	metini şifrelenip gönderilmesi ----- ------>
+4 	<---------------------Onay
+
+64 bit şifreleme  (24 bit IV + 40 bit ENC için)
+
+airmon-ng start wlan0
+
+airodump-ng wlan0mon
+
+airodump-ng --bssid 20:08:ED:80:75:DC --channel 8 --write 5457 wlan0mon  ilgili bssid de ki 8 kanaldeki bilgileri topluyoruz.
+
+aireplay--ng -a 20:08:ED:80:75:DC -h "kaynak mac adresi" -1 0 wlan0mon
+
+aircrack-ng 5457-01.cap ile kırma işlemi bırakılır.
+
+
+Fern tool ile;
+ağ kartını seç 
+etraftaki ağları bul 
+ilgili ağı seçip attack diyoruz. (paketleri topluyor, paket toplandıktan sonra kırmaya geçiyoruz.)
+
+
+14. Ders
+wpa-wpa2 şifrelerini kırmak  (wifite ile)
+
+ağ kartının monitor modta olduğunu kontrol edip 
+
+wifite  etraftaki networkleri tarıyoruz.(ilgili ağı numarası seçiyoruz.)
+
